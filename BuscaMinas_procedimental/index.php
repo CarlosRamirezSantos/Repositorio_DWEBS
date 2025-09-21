@@ -6,6 +6,8 @@ $parametros = explode("/",$_SERVER["REQUEST_URI"]);
 unset($parametros[0]);
 
 if ($_SERVER["REQUEST_METHOD"]==="GET"){
+
+   
     if ($parametros[1] == "iniciar"){
 
        iniciarTablero($tablero, 10);
@@ -22,21 +24,12 @@ if ($_SERVER["REQUEST_METHOD"]==="GET"){
     }
 
     if ($parametros[1] == "jugar"){
+      
         
         $resultado = jugar($tablero, $parametros[2]);
+        $tablero[] = $resultado;
+        echo "$tablero"; //revisar esto
 
-
-        if ($resultado==0){
-
-            echo "Apunta mejor";
-        }else if ($resultado ==1){
-
-            echo " Vaya puntería hijo...";
-
-        }else{
-
-            echo "Ten cuidado";
-        }
     }
 }
 
@@ -53,7 +46,7 @@ function iniciarTablero(&$tab, $cant){
 }
 
 function colocarMinas(&$tab){
-   
+
 $colocada = false;
 
     do{
@@ -64,11 +57,9 @@ $colocada = false;
     }
 
     }while(!$colocada);
-   
 }
 function colocarNumeros(&$tab, $cant){
 
-   
     for ($i = 0; $i < $cant; $i++) {
         if ($tab[$i] == '*') {
             // izquierda
@@ -92,6 +83,7 @@ function colocarNumeros(&$tab, $cant){
 }
 
 function toString($tab){
+
     $cadena = "";
     for ($i=0; $i < count($tab); $i++) { 
         $cadena = $cadena . ' ' . $tab[$i]. ' ';
@@ -105,6 +97,7 @@ function toString($tab){
  * 0 -> Ni se entera
  */
 function jugar($tab, $pos) {
+    
     $resultado = 0;
 
     if ($tab[$pos] == '*') {
@@ -112,7 +105,6 @@ function jugar($tab, $pos) {
     } else {
         // izquierda
         if ($pos > 0 && $tab[$pos - 1] == '*') {
-         
             $resultado = 2;
         }
         // derecha
